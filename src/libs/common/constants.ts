@@ -1,0 +1,6 @@
+export const PROVIDERS = {
+  GROCERY_MODEL: 'GROCERY_MODEL',
+  USER_MODEL: 'USER_MODEL',
+};
+
+export const SALT_ROUNDS = 10;
