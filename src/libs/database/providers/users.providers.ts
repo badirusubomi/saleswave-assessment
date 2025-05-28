@@ -1,4 +1,4 @@
-import { UserSchema } from 'libs';
+import { UserSchema } from '..';
 
 export const userProviders = [
   {

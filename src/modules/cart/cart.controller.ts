@@ -9,7 +9,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CartService } from './cart.service';
-import { AuthGuard } from 'modules/auth.guard';
 import {
   AddCartItemDto,
   DeleteCartItemDto,
@@ -18,6 +17,7 @@ import {
 import { ParseObjectIdPipe } from '@nestjs/mongoose';
 import { GroceryPropertyValidationPipe } from './cart.pipes';
 import { CartGuard } from './cart.guard';
+import { AuthGuard } from '../auth.guard';
 
 @Controller('cart')
 @UseGuards(AuthGuard)
@@ -34,7 +34,7 @@ export class CartController {
   @UseGuards(CartGuard)
   additem(
     @Param('cartId', ParseObjectIdPipe) cartId: string,
-    @Body() additemDto: AddCartItemDto,
+    @Body(new GroceryPropertyValidationPipe()) additemDto: AddCartItemDto,
   ) {
     return this.cartService.additem(cartId, additemDto);
   }

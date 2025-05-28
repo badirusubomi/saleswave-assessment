@@ -5,9 +5,9 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { User } from 'libs';
-import { Model, Types } from 'mongoose';
-import { RequestContextService } from 'services/context/context.service';
+import { Model } from 'mongoose';
+import { User } from 'src/libs';
+import { RequestContextService } from 'src/services';
 
 @Injectable()
 export class CartGuard implements CanActivate {

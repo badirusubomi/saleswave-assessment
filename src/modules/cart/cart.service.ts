@@ -1,8 +1,8 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 
 import { Model } from 'mongoose';
-import { Cart } from 'libs';
 import { AddCartItemDto, UpdateCartItemDto, DeleteCartItemDto } from './dto';
+import { Cart } from 'src/libs';
 
 @Injectable()
 export class CartService {
@@ -10,14 +10,27 @@ export class CartService {
 
   async additem(cartId: string, additemDto: AddCartItemDto) {
     const cart = await this.cartModel
-      .findByIdAndUpdate(cartId, {
-        $push: { items: { ...additemDto } },
-      })
+      .findByIdAndUpdate(
+        cartId,
+        {
+          $push: { items: { ...additemDto } },
+        },
+        { new: true },
+      )
       .exec();
     if (!cart) {
       throw new NotFoundException({ message: 'Cart not found' });
     }
-    return { message: 'Item added successfully' };
+    const item = cart.items[cart.items.length - 1];
+    return {
+      message: 'Item added successfully',
+      item: {
+        id: item['_id'].toString(),
+        name: item['name'],
+        description: item['description'],
+        quantity: item['quantity'],
+      },
+    };
   }
 
   async findCartItems(cartId: string) {

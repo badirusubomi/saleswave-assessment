@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { CartController } from './cart.controller';
-import { cartProviders, DatabaseModule, userProviders } from 'libs';
+import { cartProviders, userProviders, DatabaseModule } from 'src/libs';
 
 @Module({
   controllers: [CartController],

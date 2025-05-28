@@ -1,18 +1,14 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { GroceryModule } from './modules/grocery/grocery.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { globalConfig } from 'libs/configs';
-import { Connection } from 'mongoose';
-import { DatabaseModule } from 'libs/database/database.module';
-import { CartModule } from './modules/cart/cart.module';
-import { UserModule } from './modules/user/user.module';
 import { JwtModule } from '@nestjs/jwt';
-import { RequestMiddleware } from 'libs';
-import { RequestContextModule } from 'services';
+import { DatabaseModule, globalConfig, RequestMiddleware } from './libs';
+import { RequestContextModule } from './services';
+import { CartModule, UserModule } from './modules';
+import { Connection } from 'mongoose';
 
 @Module({
   imports: [
@@ -25,15 +21,6 @@ import { RequestContextModule } from 'services';
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => ({
         uri: config.get('mongodb.uri') ?? 'mongodb://localhost/nest',
-        onConnectionCreate: (connection: Connection) => {
-          connection.on('connected', () => console.log('connected'));
-          connection.on('open', () => console.log('open'));
-          connection.on('disconnected', () => console.log('disconnected'));
-          connection.on('reconnected', () => console.log('reconnected'));
-          connection.on('disconnecting', () => console.log('disconnecting'));
-
-          return connection;
-        },
       }),
     }),
     JwtModule.registerAsync({
@@ -51,7 +38,6 @@ import { RequestContextModule } from 'services';
       },
     ]),
     RequestContextModule,
-    GroceryModule,
     CartModule,
     UserModule,
   ],

@@ -6,10 +6,10 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { UserLoginDto, UserSignupDto } from './dto/user.request.dto';
-import { Cart, CommonHelpers, User } from 'libs';
 import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
-import { RequestContextService } from 'services/context/context.service';
+import { User, Cart, CommonHelpers } from 'src/libs';
+import { RequestContextService } from 'src/services/context/context.service';
 
 @Injectable()
 export class UserService {
@@ -36,7 +36,10 @@ export class UserService {
       cart: newCart,
     });
     newUser.save();
-    return { message: 'User created succesfully', user: newUser };
+    return {
+      message: 'User created succesfully',
+      user: { username: newUser.username, cart: newUser.cart },
+    };
   }
 
   async login({ username, password }: UserLoginDto) {
@@ -45,7 +48,7 @@ export class UserService {
       throw new NotFoundException('User does not exist');
     }
 
-    let compareResult = this.helpers.comparePasswords(
+    let compareResult = await this.helpers.comparePasswords(
       password,
       user.passwordHash,
     );
@@ -56,7 +59,7 @@ export class UserService {
 
     const jwtToken = this.jwtService.sign({ username: user.username });
 
-    return { token: jwtToken };
+    return { accessToken: jwtToken };
   }
 
   async getUserDetails() {
@@ -69,5 +72,28 @@ export class UserService {
       message: 'success',
       user: { username: user.username, cart: user.cart },
     };
+  }
+
+  async deleteuser() {
+    const user = await this.userModel
+      .findOne({ username: this.reqContextService.currentUser })
+      .exec();
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const cart = await this.cartModel.findById(user.cart['_id']);
+    if (!cart) {
+      throw new NotFoundException('User cart not found');
+    }
+    const resultCart = await this.cartModel.deleteOne({ _id: cart._id }).exec();
+    const resultUser = await this.userModel
+      .deleteOne({ username: user.username })
+      .exec();
+
+    if (!(resultCart.deletedCount > 0 && resultUser.deletedCount > 0)) {
+      throw new NotFoundException({ message: 'User not found' });
+    }
+
+    return { message: 'User deleted successfully' };
   }
 }

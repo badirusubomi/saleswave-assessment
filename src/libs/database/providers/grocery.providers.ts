@@ -1,4 +1,4 @@
-import { GrocerySchema } from 'libs/database';
+import { GrocerySchema } from '..';
 
 export const groceryProviders = [
   {

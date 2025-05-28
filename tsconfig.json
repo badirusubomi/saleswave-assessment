@@ -18,10 +18,8 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "*": ["src/*"],
-      "@libs": ["src/libs"],
-      "@modules": ["src/modules"],
-      "@services": ["src/services"]
+      "*": ["./src/*"],
+      "src/*": ["src/*"]
     },
     "types": ["node", "jest"]
   },

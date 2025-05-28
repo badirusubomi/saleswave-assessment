@@ -11,6 +11,7 @@ async function bootstrap() {
   const port = config.get('port') ?? 3000;
 
   app.useGlobalPipes(new ValidationPipe());
+  app.enableShutdownHooks();
   await app.listen(port, () => {
     console.log(`Delivery Service App running on port: ${port}`);
   });

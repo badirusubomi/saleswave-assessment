@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import {
+  userProviders,
   cartProviders,
   CommonHelpers,
   DatabaseModule,
-  userProviders,
-} from 'libs';
+} from 'src/libs';
 
 @Module({
   controllers: [UserController],

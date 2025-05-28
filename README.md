@@ -1,44 +1,63 @@
-# Execution instructions
+# 🛠️ Execution Instructions
 
-### Install required dependencies - yarn is recommended
+### Install Dependencies
 
-- `yarn install`
+```bash
+yarn install
+```
 
-### Startup mongo server with docker
+### Configure Environment Variables
 
-- `cd .dev`
-- `docker-compose up -d`
+```bash
+cp .env-docker .env
+```
 
-### Configure secrets
+Then update your `.env` file with the following (or your own secrets):
 
-- `cp .env-docker .env`
-  Specify secrets accordingly
-- `MONGO_DB_URI='mongodb://root:password@localhost:27017'`
-- `PORT=8080`
-- `JWT_SECRET='super_jwt_secret'`
-- `JWT_TTL='60mins'`
+```env
+MONGO_DB_URI='mongodb://root:password@localhost:27017'
+PORT=8080
+JWT_SECRET='super_jwt_secret'
+JWT_TTL='60mins'
+```
 
-### start backend application
+### Start MongoDB with Docker
 
-- `yarn start`
+```bash
+cd .dev
+docker-compose up -d
+```
 
-### Test Application
+### Start Backend Application
 
-- `yarn test`
+```bash
+yarn start
+```
 
-## App Logic
+### Run End-to-End Tests
 
-- On signup, users are assigned a Cart. Cart details are returned on url/user/me endpoint.
+```bash
+yarn test:e2e
+```
 
-- Users can only carry out operations on cart when signed in
+> All tests are located in the `test` folder.
 
-- username and password required for signin. (JWT Authentication)
+---
 
-- User can add and modify cart items as well as delete them.
+# App Logic
 
-- Edge cases are covered in tests.
+- On **signup**, users are assigned a **Cart**.
+- Cart details can be fetched from `/user/me` or `/cart/:cartId`.
+- Users must be **signed in** to access cart operations.
+- **JWT authentication** is used for login (`username + password`).
+- Authenticated users can:
+  - Add items to cart
+  - Modify items
+  - Delete items
 
-## Restrictions
+---
 
-- Authenticated users can't access other users' carts
-- Limit on quantity for each item
+# Restrictions
+
+- Users **cannot** access other users' carts.
+- Each item in a cart is limited to a **maximum quantity of 100**.
