@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { GroceryModule } from './modules/grocery/grocery.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { globalConfig } from 'libs/configs';
 import { Connection } from 'mongoose';
 import { DatabaseModule } from 'libs/database/database.module';
@@ -11,6 +12,7 @@ import { CartModule } from './modules/cart/cart.module';
 import { UserModule } from './modules/user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { RequestMiddleware } from 'libs';
+import { RequestContextModule } from 'services';
 
 @Module({
   imports: [
@@ -42,6 +44,13 @@ import { RequestMiddleware } from 'libs';
       }),
       global: true,
     }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 10,
+      },
+    ]),
+    RequestContextModule,
     GroceryModule,
     CartModule,
     UserModule,

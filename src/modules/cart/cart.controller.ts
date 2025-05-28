@@ -15,6 +15,9 @@ import {
   DeleteCartItemDto,
   UpdateCartItemDto,
 } from './dto/cart-request.dto';
+import { ParseObjectIdPipe } from '@nestjs/mongoose';
+import { GroceryPropertyValidationPipe } from './cart.pipes';
+import { CartGuard } from './cart.guard';
 
 @Controller('cart')
 @UseGuards(AuthGuard)
@@ -22,26 +25,33 @@ export class CartController {
   constructor(private readonly cartService: CartService) {}
 
   @Get(':cartId')
-  getItems(@Param('cartId') cartId: string) {
+  @UseGuards(CartGuard)
+  getItems(@Param('cartId', ParseObjectIdPipe) cartId: string) {
     return this.cartService.findCartItems(cartId);
   }
 
-  @Post(':id')
-  additem(@Param('cartId') cartId: string, @Body() additemDto: AddCartItemDto) {
+  @Post(':cartId')
+  @UseGuards(CartGuard)
+  additem(
+    @Param('cartId', ParseObjectIdPipe) cartId: string,
+    @Body() additemDto: AddCartItemDto,
+  ) {
     return this.cartService.additem(cartId, additemDto);
   }
 
   @Patch(':cartId')
+  @UseGuards(CartGuard)
   updateItem(
-    @Param('cartId') cartId: string,
-    @Body() payload: UpdateCartItemDto,
+    @Param('cartId', ParseObjectIdPipe) cartId: string,
+    @Body(new GroceryPropertyValidationPipe()) payload: UpdateCartItemDto,
   ) {
     return this.cartService.updateItem(cartId, payload);
   }
 
-  @Delete(':id')
+  @Delete(':cartId')
+  @UseGuards(CartGuard)
   deleteItem(
-    @Param('cartId') cartId: string,
+    @Param('cartId', ParseObjectIdPipe) cartId: string,
     @Body() payload: DeleteCartItemDto,
   ) {
     return this.cartService.deleteItem(cartId, payload);

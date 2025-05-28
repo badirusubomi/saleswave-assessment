@@ -9,11 +9,13 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'libs';
 import { Model } from 'mongoose';
+import { RequestContextService } from 'services/context/context.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     @Inject() private jwtService: JwtService,
+    private requestContextService: RequestContextService,
     @Inject() private config: ConfigService,
     @Inject('USER_MODEL') private userModel: Model<User>,
   ) {}
@@ -45,6 +47,8 @@ export class AuthGuard implements CanActivate {
       if (!user) {
         return { success: false, message: 'Invalid Token' };
       }
+
+      this.requestContextService.set('user', user['username']);
     } catch {
       return { success: false, message: 'Invalid Token' };
     }

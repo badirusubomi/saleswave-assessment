@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsMongoId,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class AddCartItemDto {
   @IsString()
@@ -21,24 +27,26 @@ export class AddCartItemDto {
 export class UpdateCartItemDto {
   @IsNotEmpty()
   @IsString()
+  @IsMongoId()
   groceryItemId: string;
 
   @IsString()
   @IsNotEmpty()
   description: string;
 
-  //   @IsNumber()
-  //   @IsOptional()
-  //   price: number;
-
   @IsString()
   @IsNotEmpty()
   name: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  quantity: number;
 }
 
 export class DeleteCartItemDto {
   @IsNotEmpty()
   @IsString()
+  @IsMongoId()
   groceryItemId: string;
 
   @IsOptional()

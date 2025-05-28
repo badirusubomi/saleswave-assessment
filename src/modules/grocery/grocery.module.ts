@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CartService } from './grocery.service';
 import { GroceryController } from './grocery.controller';
-import { DatabaseModule } from 'libs/database/database.module';
-import { groceryProviders } from './providers';
+import { groceryProviders, DatabaseModule } from 'libs';
 
 @Module({
   controllers: [GroceryController],

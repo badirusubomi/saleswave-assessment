@@ -1,6 +1,7 @@
 
-### 1. User login
-POST http://localhost:8080/user/login
+
+### 0. User Sign up
+POST http://localhost:8080/user/signup
 Content-Type: application/json
 
 {
@@ -8,34 +9,58 @@ Content-Type: application/json
   "password": "password"
 }
 
-### 2. Get cart items
-GET http://localhost:8080/cart/2
+### 1. User login
+POST http://localhost:8080/user/login
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJhZGlydXN1Ym9taSIsImlhdCI6MTc0ODM1NzYyOSwiZXhwIjoxNzQ4MzYxMjI5fQ.1V76AQeRpc-qUb2xNEuvv1IMEYFPCStcxIEmbPyqk_I
-
-### 2. Get all groceries
-GET http://localhost:8080/cart/1
-Content-Type: application/json
-Authorization: : badirusubomi
-
-### 2. Update Grocery 
-PATCH http://localhost:8080/cart/1
-Content-Type: application/json
-x-access-token: jwt_user_token-badirusubomi@gmail.com
 
 {
-  "groceryId": "123",
-  "quantity": 12,
-  "description": "Modified description",
+  "username": "badirumoni",
+  "password": "password"
+}
+
+
+### 1b. Get logged in user info
+GET http://localhost:8080/user/me
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJhZGlydW1vbmkiLCJpYXQiOjE3NDg0MjU2MjYsImV4cCI6MTc0ODQyOTIyNn0.7WS-jxj27ggHZZT9-YBdrJxXmQKXxV3cDoBZjJJYyC8
+
+
+
+
+### 2. Get cart items
+GET http://localhost:8080/cart/6835e0e56c6836d2aae3bbc1e6133bc11a9af22c368af072
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJhZGlydW1vbmkiLCJpYXQiOjE3NDg0MjU2MjYsImV4cCI6MTc0ODQyOTIyNn0.7WS-jxj27ggHZZT9-YBdrJxXmQKXxV3cDoBZjJJYyC8
+
+### 3. Add a grocery Item
+POST http://localhost:8080/cart/6835e0e56c9af22c368af072
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJhZGlydW1vbmkiLCJpYXQiOjE3NDg0MTY0MDIsImV4cCI6MTc0ODQyMDAwMn0.ulrcxtBql49d-Xxnz6yyAkORD3HBNxMw44XlgHUFv2I
+
+{
+  "name": "Milk",
+  "description": "Non Dairy",
+  "quantity": 300
+}
+
+### 4. Update Grocery 
+PATCH http://localhost:8080/cart/6835e0e56c9af22c368af072
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJhZGlydW1vbmkiLCJpYXQiOjE3NDg0MjE5NzQsImV4cCI6MTc0ODQyNTU3NH0.CfVDgVk3ZtrNOt7f6msjZ1OwGfbHHr31jXK88Furf5U
+
+{
+  "groceryItemId": "6836c1aace1b4239e811e667",
+  "name": "Milk",
+  "quantity": 99,
+  "description": "Non dairy - Modified description 2"
 }
 
 ### 2. Delete Grocery 
-DELETE  http://localhost:8080/cart/:id
+DELETE  http://localhost:8080/cart/6835e0e56c9af22c368af072
 Content-Type: application/json
-x-access-token: jwt_user_token-badirusubomi@gmail.com
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJhZGlydW1vbmkiLCJpYXQiOjE3NDg0MTY0MDIsImV4cCI6MTc0ODQyMDAwMn0.ulrcxtBql49d-Xxnz6yyAkORD3HBNxMw44XlgHUFv2I
 
 {
-  "reason": "test for deletion",
+  "groceryItemId":"6835e33d20c732e102a4259f",
+  "reason": "test for deletion"
 }
-
-

@@ -1,4 +1,4 @@
-import { CartSchema } from 'libs/database/schemas/cart.schema';
+import { CartSchema } from 'libs';
 
 export const cartProviders = [
   {
